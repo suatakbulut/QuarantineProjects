@@ -29,8 +29,8 @@ df_country = df.groupby(["Date", "Country"]).sum().reset_index()
 # Figure 1: Total Number of Deaths
 #-----------------------------------
 fig1 = px.choropleth(df_country, 
-                    locations="Country", 
-                    locationmode = "country names",
+                    locations="Country",
+                     locationmode = "country names",
                     color="Deaths", 
                     hover_name="Country", 
                     animation_frame="Date"
@@ -72,19 +72,20 @@ fig2.update_layout(
 #-------------------------------------
 # Create daily death distribution
 dailyTotalDeaths = df_country.groupby("Date").sum().Deaths
-df_country["distDeaths"]  = df_country.apply(lambda row: row.Deaths / dailyTotalDeaths[row.Date] ,axis=1)
+df_country["Deaths Ratio"]  = df_country.apply(lambda row: row.Deaths / dailyTotalDeaths[row.Date] ,axis=1)
 
 fig3 = px.choropleth(df_country, 
                     locations="Country", 
                     locationmode = "country names",
-                    color="distDeaths", 
+                    color="Deaths Ratio", 
                     hover_name="Country", 
-                    animation_frame="Date"
+                    animation_frame="Date",
+                    range_color=(0, 1),
                    )
 
 
 fig3.update_layout(
-    title_text = 'Distribution of Deaths across Country',
+    title_text = 'Distribution of Deaths Across Countries',
     title_x = 0.5,
     geo=dict(
         showframe = False,
